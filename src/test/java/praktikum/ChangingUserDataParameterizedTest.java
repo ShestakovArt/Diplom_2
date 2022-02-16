@@ -78,12 +78,10 @@ public class ChangingUserDataParameterizedTest {
 
         CreateUserResponse getDataUser = userRequest.getUserDataResponse(accessToken.substring(7)).body().as(CreateUserResponse.class);
         if (email != null){
-            var s = getDataUser.getUser().getEmail();
             Assert.assertEquals("Email пользователя не изменился", email, getDataUser.getUser().getEmail());
         }
 
         if (name != null){
-            var f = getDataUser.getUser().getName();
             Assert.assertEquals("Имя пользователя не изменилось", name, getDataUser.getUser().getName());
         }
     }

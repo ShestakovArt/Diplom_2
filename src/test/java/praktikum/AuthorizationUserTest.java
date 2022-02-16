@@ -19,11 +19,13 @@ import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 public class AuthorizationUserTest {
 
     public UserRequest userRequest;
+    public User user;
     private String accessToken;
 
     @Before
     public void setup() {
         userRequest = new UserRequest();
+        user = User.getRandom();
     }
 
     @After
@@ -37,7 +39,6 @@ public class AuthorizationUserTest {
     @DisplayName("Successful user Authorization")
     @Description("Успешная авторизация пользователя")
     public void testSuccessfulUserAuthorization() {
-        User user = User.getRandom();
         Response responseCreate = userRequest.createUserResponse(user);
         accessToken = responseCreate.body().as(CreateUserResponse.class).getAccessToken();
         responseCreate.then().statusCode(SC_OK);
@@ -51,7 +52,6 @@ public class AuthorizationUserTest {
     @DisplayName("Authorization with invalid login")
     @Description("Авторизация с не коректным логином")
     public void testAuthorizationInvalidLogin() {
-        User user = User.getRandom();
         Response responseAuthorization = userRequest.authorizationUserResponse(user);
         responseAuthorization.then().statusCode(SC_UNAUTHORIZED);
         ResponseErrorMessage bodyResponseErrorMessage = responseAuthorization.body().as(ResponseErrorMessage.class);
@@ -67,7 +67,6 @@ public class AuthorizationUserTest {
     @DisplayName("Authorization with invalid password")
     @Description("Авторизация с не коректным паролем")
     public void testAuthorizationInvalidPassword() {
-        User user = User.getRandom();
         Response responseCreate = userRequest.createUserResponse(user);
         accessToken = responseCreate.body().as(CreateUserResponse.class).getAccessToken();
         responseCreate.then().statusCode(SC_OK);
